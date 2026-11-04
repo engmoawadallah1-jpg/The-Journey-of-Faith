@@ -1,7 +1,11 @@
 {
   "name": "tanstack_start_ts",
+  "version": "1.0.0",
+  "description": "رحلة الإيمان – Windows & Android app",
+  "author": "Rehlat Iman",
+  "main": "electron/main.cjs",
   "private": true,
-  "sideEffects": false,
+  "sideEffects": ["**/*.css"],
   "type": "module",
   "scripts": {
     "dev": "vite dev",
@@ -11,12 +15,20 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build:app": "vite build --config vite.app.config.ts",
+    "app:dev": "vite --config vite.app.config.ts",
+    "electron:dev": "npm run build:app && electron .",
+    "electron:build": "npm run build:app && electron-builder --win --publish never",
+    "android:sync": "npm run build:app && cap sync android",
+    "android:open": "cap open android"
   },
   "overrides": {
     "rolldown": "1.2.1"
   },
   "dependencies": {
+    "@fontsource/cairo": "^5.2.0",
+    "@fontsource/tajawal": "^5.2.0",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -72,6 +84,10 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@capacitor/android": "^7.4.0",
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^7.4.0",
+    "@capacitor/core": "^7.4.0",
     "@eslint/js": "^9.32.0",
     "@lovable.dev/vite-tanstack-config": "2.26.5",
     "@testing-library/jest-dom": "^6.6.0",
@@ -80,6 +96,8 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.2.0",
+    "electron": "^37.2.0",
+    "electron-builder": "^26.0.12",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",
@@ -93,5 +111,49 @@
     "typescript-eslint": "^8.56.1",
     "vite": "8.1.5",
     "vitest": "^4.1.10"
+  },
+  "build": {
+    "appId": "com.rehlatiman.app",
+    "productName": "Rehlat Iman",
+    "directories": {
+      "output": "release",
+      "buildResources": "resources"
+    },
+    "files": [
+      "electron/**/*",
+      "dist-app/**/*",
+      "resources/icon.png",
+      "package.json",
+      "!node_modules/**/*",
+      "!**/*.map"
+    ],
+    "asar": true,
+    "win": {
+      "icon": "resources/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "shortcutName": "رحلة الإيمان",
+      "artifactName": "RehlatIman-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "RehlatIman-Portable-${version}.${ext}"
+    }
   }
 }

@@ -1,0 +1,7 @@
+{
+  "appId": "com.rehlatiman.app",
+  "appName": "رحلة الإيمان",
+  "webDir": "dist-app",
+  "server": { "androidScheme": "https" },
+  "android": { "allowMixedContent": false, "adjustMarginsForEdgeToEdge": "auto" }
+}
